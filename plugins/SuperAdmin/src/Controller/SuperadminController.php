@@ -5,6 +5,7 @@ namespace SuperAdmin\Controller;
 
 use SuperAdmin\Controller\AppController;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Cake\I18n\FrozenTime;
 
 /**
  * Superadmin Controller
@@ -19,6 +20,8 @@ class SuperadminController extends AppController
     	parent::initialize();
         $this->loadModel('Users');
         $this->loadModel('SuperAdmin.UsersOtp');
+        $this->loadModel('SuperAdmin.UserLoginAttempt');
+        $this->loadModel('SuperAdmin.PasswordReset');
     }
 
 
@@ -26,7 +29,7 @@ class SuperadminController extends AppController
 	{
 	    parent::beforeFilter($event);
 
-	    $this->Authentication->allowUnauthenticated(['login','verifyOtp']);
+	    $this->Authentication->allowUnauthenticated(['login','verifyOtp','forgotPassword', 'resetPassword']);
 	}
 
     public function login()
@@ -44,8 +47,8 @@ class SuperadminController extends AppController
 		if ($this->request->is('post')) {
 	    	$data = $this->request->getData();
 	    	$verifyUser = $this->verifyUser($data);
+	    	$this->saveUserLoginAttempt($verifyUser['id']);
 	    	if(count($verifyUser)>0){
-	    		// dd($verifyUser);
 	    		$otpSaveSuccess = $this->saveUsersOtp($verifyUser['id']);
 	    		if($otpSaveSuccess){
 		    		$this->request->getSession()->write(['user' => $verifyUser]);
@@ -67,6 +70,16 @@ class SuperadminController extends AppController
 		}
 	}
 
+
+	public function saveUserLoginAttempt(int $user_id){
+		$userLoginAttempt = $this->UserLoginAttempt->newEmptyEntity();
+		$userLoginAttempt->user_id = $user_id;
+		$this->UserLoginAttempt->save($userLoginAttempt);
+		
+	}
+
+
+	
 	public function generateNumericOTP($n) { 
 		
 		$generator = "1357902468"; 
@@ -108,11 +121,11 @@ class SuperadminController extends AppController
 			$user = $this->request->getSession()->read('user');
 			$otp = $this->request->getData()['otp'];
 			$matchOtp = $this->matchOtp($user['id'], $otp);
-    		if($matchOtp){
+    		if($matchOtp == 1){
     			$updateOtp = $this->UsersOtp->query();
 				$updateOtp->update()
 				    ->set(['status' => 2])
-				    ->where(['user_id' => $user['id']])
+				    ->where(['user_id' => $user['id'], 'otp' => $otp])
 				    ->execute();
 	    		$this->request->getSession()->write(['Auth' => $user]);
 	    		$redirect = $this->request->getQuery('redirect', [
@@ -122,19 +135,47 @@ class SuperadminController extends AppController
 		        ]);
 		        return $this->redirect($redirect);
 	    	}
+	    	else if($matchOtp == 2){
+	    		$redirect = $this->request->getQuery('redirect', [
+		        	'plugin' => 'SuperAdmin',
+		            'controller' => 'Superadmin',
+		            'action' => 'login',
+		        ]);
+		        return $this->redirect($redirect);
+	    	}
 	    	else{
-	    		$this->Flash->error('Otp did not match');
+	    		$redirect = $this->request->getQuery('redirect', [
+		        	'plugin' => 'SuperAdmin',
+		            'controller' => 'Superadmin',
+		            'action' => 'login',
+		        ]);
+		        return $this->redirect($redirect);
 	    	}
 	    }
 	}
 
 
 	public function matchOtp(int $user_id, string $otp){
+		$result = 0;
 		$userByOtp = $this->UsersOtp->find('all')
-	    		->where(['UsersOtp.user_id' => $user_id, 'UsersOtp.otp' => $otp])->first()->toArray();
+	    		->where(['UsersOtp.user_id' => $user_id, 'UsersOtp.otp' => $otp, 'UsersOtp.status' => 1])->first()->toArray();
 	    $currentTime = strtotime("now");
-	   	$expireTime = strtotime('+5 minutes', strtotime($userByOtp['created']));
-	    return $userByOtp;
+	    $expireTime = strtotime('+5 minutes', strtotime($userByOtp['created']->format('Y-m-d H:i:s')));
+	   	if($currentTime <= $expireTime){
+	   		$result = 1;
+	   	}
+	   	else if($currentTime > $expireTime){
+	   		$updateOtp = $this->UsersOtp->query();
+			$updateOtp->update()
+			    ->set(['status' => 3])
+			    ->where(['user_id' => $user_id, 'otp' => $otp])
+			    ->execute();
+	   		$result = 2;
+	   	}
+	   	else{
+	   		$result = 0;
+	   	}
+	    return $result;
 	}
 
 	public function verifyUser(array $data){
@@ -162,5 +203,32 @@ class SuperadminController extends AppController
 	        ]);
 			return $this->redirect($redirect);
 	    }
+	}
+
+
+	public function forgotPassword(){
+		if ($this->request->is('post')) {
+			$data = $this->request->getData();
+			$updateToken = $this->PasswordReset->query();
+			$updateToken->update()
+			    ->set(['status' => 0])
+			    ->where(['email' => $data['email'], 'status' => 1])
+			    ->execute();
+			$passwordReset = $this->PasswordReset->newEmptyEntity();
+			$passwordReset->email = $data['email'];
+			$passwordReset->token = md5($data['email']).rand(10,999999999);
+			$passwordReset->status = 1;
+			if($this->PasswordReset->save($passwordReset)){
+				dd('password sent');
+			}
+			else{
+
+			}
+		}
+	}
+
+
+	public function resetPassword($id){
+		dd($id);
 	}
 }

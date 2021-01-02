@@ -13,6 +13,9 @@ $routes->plugin(
         $routes->get('/logout', ['controller' => 'Superadmin', 'action' => 'logout']);
         $routes->get('/verify-otp', ['controller' => 'Superadmin', 'action' => 'verifyOtp']);
         $routes->post('/verify-otp', ['controller' => 'Superadmin', 'action' => 'verifyOtp']);
+        $routes->get('/forgot-password', ['controller' => 'Superadmin', 'action' => 'forgotPassword']);
+        $routes->post('/forgot-password', ['controller' => 'Superadmin', 'action' => 'forgotPassword']);
+        $routes->get('/reset-password/{id}', ['controller' => 'Superadmin', 'action' => 'resetPassword']);
         // $routes->get('/contacts/{id}', ['controller' => 'Contacts', 'action' => 'view']);
         // $routes->put('/contacts/{id}', ['controller' => 'Contacts', 'action' => 'update']);
     }

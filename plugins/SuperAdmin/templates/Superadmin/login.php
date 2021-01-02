@@ -27,7 +27,8 @@
                             <span class="b-input"></span>
                         </label>
                         <div class="forget">
-                            <a href="/forgot-password">Forgot Password ?</a>
+                            <!-- <a href="/forgot-password">Forgot Password ?</a> -->
+                            <?=$this->Html->link('Forgot Password ?','/super-admin/forgot-password');?>
                         </div>
                     </div>
                 </form>

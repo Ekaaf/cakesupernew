@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2021 at 07:22 PM
+-- Generation Time: Jan 02, 2021 at 09:15 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.7
 
@@ -20,6 +20,50 @@ SET time_zone = "+00:00";
 --
 -- Database: `superadmin`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_reset`
+--
+
+CREATE TABLE `password_reset` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `status` int(1) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `password_reset`
+--
+
+INSERT INTO `password_reset` (`id`, `email`, `token`, `status`, `created`, `modified`) VALUES
+(1, 'ekaf@gmail.com', 'f7cb0ef4336e0543d69290627e3b87e2409670688', 2, '2021-01-02 20:02:24', '2021-01-02 20:02:24'),
+(2, 'ekaf@gmail.com', 'f7cb0ef4336e0543d69290627e3b87e2301489489', 0, '2021-01-02 20:02:33', '2021-01-02 20:02:33'),
+(3, 'ekaf@gmail.com', 'f7cb0ef4336e0543d69290627e3b87e2442475644', 1, '2021-01-02 20:03:20', '2021-01-02 20:03:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userlogin_attempt`
+--
+
+CREATE TABLE `userlogin_attempt` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `userlogin_attempt`
+--
+
+INSERT INTO `userlogin_attempt` (`id`, `user_id`, `created`, `modified`) VALUES
+(1, 1, '2021-01-02 19:24:43', '2021-01-02 19:24:43');
 
 -- --------------------------------------------------------
 
@@ -64,30 +108,30 @@ CREATE TABLE `users_otp` (
 --
 
 INSERT INTO `users_otp` (`id`, `user_id`, `otp`, `status`, `created`, `modified`) VALUES
-(22, 1, '68199', 2, '2021-01-02 10:38:17', '2021-01-02 10:38:17'),
-(23, 1, '879372', 2, '2021-01-02 10:41:11', '2021-01-02 10:41:11'),
-(24, 1, '837856', 2, '2021-01-02 10:57:47', '2021-01-02 10:57:47'),
-(25, 1, '822682', 2, '2021-01-02 10:58:10', '2021-01-02 10:58:10'),
-(26, 1, '342770', 2, '2021-01-02 10:58:24', '2021-01-02 10:58:24'),
-(27, 1, '408005', 2, '2021-01-02 10:58:54', '2021-01-02 10:58:54'),
-(28, 1, '258781', 2, '2021-01-02 10:59:09', '2021-01-02 10:59:09'),
-(29, 1, '301501', 2, '2021-01-02 11:05:06', '2021-01-02 11:05:06'),
-(30, 1, '659334', 2, '2021-01-02 11:05:13', '2021-01-02 11:05:13'),
-(31, 1, '149975', 2, '2021-01-02 11:05:23', '2021-01-02 11:05:23'),
-(32, 1, '232558', 2, '2021-01-02 11:06:16', '2021-01-02 11:06:16'),
-(33, 1, '815559', 2, '2021-01-02 11:41:36', '2021-01-02 11:41:36'),
-(34, 1, '417684', 2, '2021-01-02 11:41:43', '2021-01-02 11:41:43'),
-(35, 1, '53597', 2, '2021-01-02 11:41:53', '2021-01-02 11:41:53'),
-(36, 1, '819676', 2, '2021-01-02 11:42:15', '2021-01-02 11:42:15'),
-(37, 1, '205243', 2, '2021-01-02 11:43:30', '2021-01-02 11:43:30'),
-(38, 1, '438310', 2, '2021-01-02 11:49:43', '2021-01-02 11:49:43'),
-(39, 1, '100064', 2, '2021-01-02 11:52:23', '2021-01-02 11:52:23'),
-(40, 1, '676063', 2, '2021-01-02 11:53:58', '2021-01-02 11:53:58'),
-(41, 1, '380344', 2, '2021-01-02 11:54:18', '2021-01-02 11:54:18');
+(42, 1, '654495', 0, '2021-01-02 18:57:29', '2021-01-02 18:57:29'),
+(43, 1, '438702', 0, '2021-01-02 18:57:44', '2021-01-02 18:57:44'),
+(44, 1, '773630', 0, '2021-01-02 18:58:37', '2021-01-02 18:58:37'),
+(45, 1, '223078', 0, '2021-01-02 19:10:09', '2021-01-02 19:10:09'),
+(46, 1, '422244', 0, '2021-01-02 19:10:39', '2021-01-02 19:10:39'),
+(47, 1, '592315', 0, '2021-01-02 19:10:48', '2021-01-02 19:10:48'),
+(48, 1, '856290', 0, '2021-01-02 18:10:57', '2021-01-02 19:10:57'),
+(49, 1, '787377', 1, '2021-01-02 19:24:43', '2021-01-02 19:24:43');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `password_reset`
+--
+ALTER TABLE `password_reset`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `userlogin_attempt`
+--
+ALTER TABLE `userlogin_attempt`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -106,6 +150,18 @@ ALTER TABLE `users_otp`
 --
 
 --
+-- AUTO_INCREMENT for table `password_reset`
+--
+ALTER TABLE `password_reset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `userlogin_attempt`
+--
+ALTER TABLE `userlogin_attempt`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -115,7 +171,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users_otp`
 --
 ALTER TABLE `users_otp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
