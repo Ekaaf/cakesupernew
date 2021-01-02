@@ -1,0 +1,95 @@
+.sidebar-wrap{
+  @include transition(all 0.5s ease 0s);
+  position: relative;
+  padding: 18px 15px;
+  background: $medium-gray;
+
+  &.hide{
+    -ms-transform: translateX(-100%) translateX(-15px);
+    @include transform(translateX(calc(-100% - -15px)));
+    background: #e1e1e1;
+  }
+
+  @media screen and (max-width: 991px){
+    -ms-transform: translateX(-100%) translateX(-15px);
+    @include transform(translateX(calc(-100% - -15px)));
+    background: #e1e1e1;
+    &.hide{
+      -ms-transform: translateX(0px) translateX(0px);
+      @include transform(translateX(calc(0px - 0px)));
+      background: $medium-gray;
+    }
+  }
+
+  button.close{
+    @include size(24px, 24px);
+    @include absolute(12px, -12px, auto, auto);
+    background: $white;
+    border: 1px solid #E1E2E4;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 0;
+    @include transition(all 0.5s ease 0s);
+    &:hover{
+      @include transition(all 0.5s ease 0s);
+      border-color: $blue;
+      background: $blue;
+      svg path{
+        fill:$white;
+      }
+    }
+  }
+  h6{
+    padding: 0 12px;
+  }
+  a{
+    span{
+      @include size(18px,18px);
+      border-radius: 50%;
+      background: #A3ADB9;
+      color:$white;
+      font-size: 13px;
+      text-align: center;
+      font-weight: 300;
+      margin-right: 6px;
+    }
+    &.active{
+      color:$black;
+      span{
+        background: $blue;
+      }
+    }
+    display: block;
+    color: #828282;
+    font-weight: 300;
+    font-size: 14px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    @include display(flex);
+    @include align-items(center);
+    @include transition(all 0.5s ease 0s);
+    svg{
+      margin-right:12px;
+      @include transition(all 0.5s ease 0s);
+    }
+    &.active,
+    &:hover{
+      color:$blue;
+      text-decoration: none;
+      svg path{
+        @include transition(all 0.5s ease 0s);
+      }
+
+      svg{
+        path:not([fill="none"]){
+          fill: $blue;
+        }
+        path[stroke]{
+          fill: none;
+          stroke: $blue;
+        }
+      }
+
+    }
+  }
+}

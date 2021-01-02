@@ -1,0 +1,99 @@
+.sidebar-props-content{
+  position: fixed;
+  right: 0;
+  top:0;
+  height: 100%;
+  width:420px;
+  background: #fff;
+  border:1px solid #eee;
+  z-index: 9999;
+  @include transition(all 0.5s ease 0s);
+  @include transform(translateX(100%));
+  &.active{
+    @include transition(all 0.5s ease 0s);
+    @include transform(translateX(0px));
+  }
+  .sidebar-props-content-wrap{
+    height: calc(100% - 51px);
+  }
+}
+
+
+.sidebar-props-default{
+  position: fixed;
+  right: 0;
+  top:0;
+  height: 100%;
+  width:420px;
+  background: #fff;
+  border:1px solid #eee;
+  z-index: 9999;
+  @include transition(all 0.5s ease 0s);
+  @include transform(translateX(100%));
+  &.active{
+    @include transition(all 0.5s ease 0s);
+    @include transform(translateX(0px));
+  }
+  .sidebar-props-content-wrap{
+    height: calc(100% - 51px);
+  }
+}
+
+
+.sidebar-notification{
+  @include absolute(auto, auto, 26px, auto);
+  .notification-box{
+    width: 368px;
+  }
+}
+
+
+// Circle styles.
+.animated-svg-circle {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 4px solid #A1E3E3;
+  position: relative;
+}
+.animated-svg-circle svg{
+  @include absolute(-4px,auto, auto, -4px);
+  height: 30px;
+  width: 30px;
+}
+.circle__svg {
+  animation: 2s linear infinite both circle__svg;
+}
+
+@keyframes circle__svg {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+.circle__svg-circle {
+  animation: 1.4s ease-in-out infinite both circle__svg-circle;
+  fill: transparent;
+  stroke: #22B0AF;
+  stroke-dasharray: 285;
+  stroke-linecap: round;
+  stroke-width: 10px;
+  transform-origin: 50% 50%;
+}
+
+@keyframes circle__svg-circle {
+  0%, 25% {
+    stroke-dashoffset: 280;
+    transform: rotate(0);
+  }
+  50%, 75% {
+    stroke-dashoffset: 75;
+    transform: rotate(45deg);
+  }
+  100% {
+    stroke-dashoffset: 280;
+    transform: rotate(360deg);
+  }
+}

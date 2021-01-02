@@ -1,0 +1,45 @@
+.promote-events{
+  max-width: 1005px;
+  margin: 0;
+  a{
+    @include display(flex);
+    @include justify-content(center);
+    @include align-items(center);
+    @include flex-direction(column);
+    text-align: center;
+    height: 100%;
+    padding: 40px;
+    text-decoration: none;
+    &:nth-of-type(1){
+      &:hover{
+        background: #FFFBF3;
+      }
+    }
+    &.publish{
+      &:hover{
+        background: #FFFAFA;
+      }
+    }
+    &.coupons{
+      &:hover{
+        background: #FAFAFF;
+      }
+    }
+    &.track{
+      &:hover{
+        background: #F5FFFB;
+      }
+    }
+    h6{
+      color:#000;
+      margin-top: 20px;
+    }
+    p{
+      color:#4B4C4C;
+    }
+  }
+}
+
+.bg-gragreen-light{
+  background: #D3EFE2 !important;
+}

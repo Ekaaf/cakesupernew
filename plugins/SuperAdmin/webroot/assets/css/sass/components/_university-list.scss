@@ -1,0 +1,50 @@
+.university-list{
+  @include display(flex);
+  @include flex-wrap(wrap);
+  @include justify-content(center);
+  padding: 0 90px;
+  margin-top: 20px;
+  a{
+    border: 1px solid #BDBDBD;
+    background: $white;
+    padding: 20px 10px;
+    height: 142px;
+    width: 220px;
+    border-radius: 4px;
+    margin: 9px;
+    position: relative;
+    @include transition(all 0.5 ease 0s);
+    img{
+      max-width: 100%;
+    }
+    &.active{
+      border: 2px solid #27AE60;
+      &::before{
+        content:"";
+        @include spr-sprite(check-select);
+        @include size(30px, 30px);
+        @include absolute(-12px,-12px,auto,auto);
+        @include transition(all 0.5 ease 0s);
+      }
+    }
+  }
+  &.selected{
+    a:not(.active){
+      opacity: 0.4;
+    }
+  }
+}
+
+.back-header{
+  padding: 17px 15px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  a{
+    color: $black;
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: none;
+    &:hover{
+      color:$blue;
+    }
+  }
+}

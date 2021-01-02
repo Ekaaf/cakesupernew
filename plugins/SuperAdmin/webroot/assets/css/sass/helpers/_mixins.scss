@@ -1,0 +1,95 @@
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+//@include spr-sprite(error);
+//@include size(16px, 18px);
+
+@mixin list-style {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+//@include list-style;
+
+
+// Absolute Position
+@mixin absolute($top: auto, $right: auto, $bottom: auto, $left: auto) {
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  position: absolute;
+}
+//@include absolute(auto, auto, 0, 0);
+
+// Fixed Position
+@mixin fixed($top: null, $right: null, $bottom: null, $left: null) {
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  position: fixed;
+}
+//@include fixed(0,0,0,0);
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+//@include text-truncate;
+
+@mixin transition($property) {
+  -webkit-transition: $property;
+  transition: $property;
+}
+
+@mixin transform($transforms) {
+  -webkit-transform: $transforms;
+  -ms-transform: $transforms;
+  transform: $transforms;
+}
+
+//.box { @include transform(rotate(30deg)); }
+//@include display(flex);
+//@include flex-wrap(wrap);
+
+//flex
+@mixin display($flex){
+  display: -ms-flexbox;
+  display: $flex;
+}
+@mixin flex-wrap($wrap){
+  -ms-flex-wrap: $wrap;
+  flex-wrap: $wrap;
+}
+@mixin justify-content($space-between){
+  -ms-flex-pack: justify;
+  -webkit-justify-content: $space-between;
+  justify-content: $space-between;
+}
+@mixin align-items($center){
+  -ms-flex-align: $center;
+  -webkit-align-items: $center;
+  align-items: $center;
+}
+@mixin flex-direction($row){
+  -ms-flex-direction: $row;
+  -webkit-flex-direction: $row;
+  flex-direction: $row;
+}
+@mixin align-self($flex-end){
+  -webkit-align-self: $flex-end;
+  align-self: $flex-end;
+}
+
+@mixin transition($all-ease){
+  -webkit-transition: $all-ease;
+  transition: $all-ease;
+}
+
+//@mixin transform($x, $y){
+//  -webkit-transform: translate($x, $y);
+//  transform: translate($x, $y);
+//}

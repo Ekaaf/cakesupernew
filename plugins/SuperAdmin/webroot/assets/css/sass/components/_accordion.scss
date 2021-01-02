@@ -1,0 +1,27 @@
+.accordion{
+  .card-header{
+    border:0;
+    button[data-toggle="collapse"]{
+      i:nth-last-of-type(1){
+        display: none;
+      }
+      &[aria-expanded="true"]{
+        i:nth-last-of-type(1){
+          display: inline-block;
+        }
+        i:nth-last-of-type(2){
+          display: none;
+        }
+      }
+    }
+  }
+
+  .card-body{
+    border-style:solid;
+    border-color: #F4F5F7;
+    border-width: 0 14px;
+  }
+  .card{
+    overflow: visible;
+  }
+}

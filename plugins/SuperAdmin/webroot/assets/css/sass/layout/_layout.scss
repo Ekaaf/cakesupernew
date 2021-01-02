@@ -1,0 +1,75 @@
+.container-small{
+  width: 900px;
+  max-width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.eb-container{
+  width: 1170px;
+  max-width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.eb-container-medium{
+  width: 730px;
+  max-width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.main-body-container{
+  height: calc(100vh - 65px);
+  .sidebar-wrap{
+    width: 264px;
+    position: fixed;
+    left: 0;
+    top: 66px;
+    bottom: 0;
+    z-index: 33;
+    background: #FAFAFA;
+    box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1);
+  }
+  .main-body-wrapper{
+    background: #F4F5F7;
+    flex-grow: 1;
+    margin-left: 264px;
+    @include transition(all 0.5s ease 0s);
+    @media screen and (max-width: 991px){
+    margin-left: 0;
+    max-width: 100%;
+    }
+    &.show-sidebar{
+      max-width: calc(100% - 15px);
+      margin-left: 15px;
+      @media screen and (max-width: 991px){
+        max-width: 100%;
+        margin-left: 0;
+      }
+    }
+    .inner-body{
+      overflow: hidden;
+      overflow-y: auto;
+      max-height: calc(100vh - 65px);
+    }
+  }
+}
+
+.height-vh{
+  height: calc(100vh - 80px) !important;
+}
+
+.layout-dabble-header{
+  .main-body-container{
+    height: calc(100vh - 119px);
+
+    .sidebar-wrap {
+      top: 119px;
+    }
+  }
+}

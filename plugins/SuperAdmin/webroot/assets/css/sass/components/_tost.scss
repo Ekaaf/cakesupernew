@@ -1,0 +1,43 @@
+.notification-box{
+  background: #383838;
+  width: 288px;
+  max-width: 100%;
+  border-left: 4px solid #15B672;
+  border-radius: 4px;
+  padding: 18px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  .notify-content{
+    padding: 0 10px;
+    *{
+      color: $white;
+    }
+    h6{
+      font-size: 15px;
+      line-height: 20px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    p{
+      font-size: 14px;
+      padding: 0;
+      line-height: 18px;
+    }
+  }
+  &.error-tost{
+    border-color: #E4333E;
+  }
+  &.warning-tost{
+    border-color: #F29D39;
+  }
+  &.bg-white{
+    h6{
+      color: $black;
+    }
+    *{
+      color: $black-thin;
+    }
+  }
+  .close{
+    line-height: 0;
+  }
+}

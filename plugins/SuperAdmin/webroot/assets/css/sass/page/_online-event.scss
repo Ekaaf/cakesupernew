@@ -1,0 +1,79 @@
+.steps-box{
+  > div{
+    margin: 5px 10px 5px 0;
+    &:not(:last-of-type){
+      position: relative;
+      padding-right: 24px;
+    }
+    &::after{
+      @include absolute(50%, 0, auto, auto);
+      content: "";
+      height:2px;
+      width: 14px;
+      background: #DDE3E5;
+    }
+    &:last-of-type{
+      &::after{
+        display: none;
+      }
+    }
+    .step-count{
+      @include size(18px, 18px);
+      border-radius: 50%;
+      background: #A3ADB9;
+      display: inline-block;
+      text-align: center;
+      line-height: 18px;
+      font-size: 13px;
+      font-weight: normal;
+      color: white;
+    }
+    span:not(.step-count){
+      color: #A3ADB9;
+    }
+    &.active span{
+      color:$black;
+      &.step-count{
+        background: $blue;
+        color: $white;
+      }
+    }
+  }
+}
+
+.center-body-container{
+  @include display(flex);
+  height: calc(100vh - 176px);
+  overflow: hidden;
+  overflow-y: auto;
+}
+.center-content-wrap{
+  width: 554px;
+  max-width: 100%;
+  padding: 28px 24px;
+  box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05), 2px 2px 2px rgba(0, 0, 0, 0.05);
+  &.large{
+    width: 575px;
+  }
+}
+
+.uploaded-banner-wrap{
+  > div{
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    &:last-child{
+      box-shadow: 0 0 0 0;
+    }
+    img{
+      @include size(70px, 48px);
+    }
+  }
+}
+
+
+.template-select{
+  &.active{
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 3px #3CC13B;
+    height: 55px;
+  }
+}

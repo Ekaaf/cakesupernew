@@ -1,0 +1,81 @@
+.select2-search--dropdown {
+  padding: 15px;
+}
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  border: 1px solid #d3d3d3;
+  border-radius: 4px;
+}
+
+.select2-container--default .select2-selection--multiple{
+  padding-bottom: 0;
+}
+.select2-container .select2-selection--multiple{
+  min-height: 40px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+  margin-top: 7px;
+  background-color: #D3EFEF;
+  border: 1px solid $blue-light;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+  border:0;
+  &:hover{
+    background: transparent;
+  }
+  span{
+    font-size: 19px;
+    height: 10px;
+    line-height: 22px;
+    color: #7b7b7b;
+  }
+}
+.select2-container--default .select2-selection--multiple .select2-selection__clear{
+  font-size: 19px;
+  height: 10px;
+  line-height: 22px;
+  color: #7b7b7b;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__clear span{
+  background: #fff;
+  width: 18px;
+  display: inline-block;
+  margin-right: -12px;
+  z-index: 333;
+  position: relative;
+}
+.select2-container .select2-search--inline .select2-search__field {
+  margin-top: 8px;
+  margin-left: 10px;
+}
+//-------------
+.select2-results__option--selectable{
+  font-weight: 500;
+  padding: 8px 15px;
+}
+.select2-container--default .select2-results__option--selected {
+  background: $blue !important;
+  color: $white !important;
+  position: relative;
+  &:before{
+    content: "";
+    @include spr-sprite(select-check);
+    @include size(14px, 11px);
+    @include absolute(12px, 15px, auto, auto);
+  }
+}
+
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable{
+  background: #f1f1f1;
+  color: inherit;
+}
+
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 40px;
+}
+.select2-container .select2-selection--single {
+  height: 40px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 40px;
+}

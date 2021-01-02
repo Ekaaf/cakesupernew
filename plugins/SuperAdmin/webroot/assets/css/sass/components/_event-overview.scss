@@ -1,0 +1,25 @@
+.promote-event-link{
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  &:last-of-type{
+    border:0;
+    padding-bottom: 0;
+  }
+  a{
+    color:#4B4C4C;
+    font-size: 16px;
+    &:hover{
+      text-decoration: none;
+      color:$blue;
+    }
+  }
+}
+.bg-yellow-light{
+  background: rgba(253, 203, 110, 0.3) !important;
+}
+.bg-pink-light{
+  background: rgba(255, 204, 204, 0.35) !important;
+}
+.bg-grablue-light{
+  background: rgba(162, 159, 255, 0.2) !important;
+}

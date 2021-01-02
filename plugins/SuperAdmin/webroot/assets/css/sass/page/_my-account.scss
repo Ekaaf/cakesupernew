@@ -1,0 +1,46 @@
+.my-details{
+  a{
+    color: #4B4C4C;
+    @include display(flex);
+    @include align-items(center);
+    padding: 6px 0;
+    @include transition(all 0.5s ease 0s);
+    &:hover{
+      text-decoration: none;
+      color:$blue;
+      svg path{
+        fill: $blue;
+      }
+    }
+  }
+}
+.circle-icon-box{
+  @include display(flex);
+  @include justify-content(center);
+  @include align-items(center);
+  @include size(39px, 39px);
+  border-radius: 50%;
+  font-size: 18px;
+  text-align: center;
+  margin-right: 8px;
+  background: rgba(163,173,185,0.15);
+  &.box-lg{
+    @include size(54px, 54px);
+  }
+}
+
+.btn-file-upload{
+  .file-upload{
+    border:1px solid $blue;
+  }
+}
+
+.file-upload-wrap{
+  .uploadifive-button{
+    opacity: 0 !important;
+    position: absolute !important;
+  }
+  .uploadifive-queue{
+    display: none !important;
+  }
+}

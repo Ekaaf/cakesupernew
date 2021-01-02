@@ -1,0 +1,145 @@
+.event-list-dropdown{
+  .avatar-group{
+    .avatar{
+      margin-left: -16px;
+      border:2px solid #fff;
+      &:nth-of-type(1){
+        margin-left: 0;
+      }
+    }
+  }
+  &.dropdown-default.dropdown-profile{
+    .dropdown-menu{
+      width:510px;
+      left: -15px !important;
+      border: 1px solid rgba(163, 173, 185, 0.5);
+
+      &.top-arrow::before {
+        display: none;
+      }
+
+      .search-box svg path{
+        fill:none;
+      }
+
+      .rounded-thumb {
+        width: 90px;
+        height: 52px;
+      }
+      button.btn-icon-round {
+        display: block;
+        width: 22px;
+        height: 22px;
+        background: #fff;
+        border: 1px solid #E1E2E4;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 0;
+        padding: 0;
+        span:not(.avatar) {
+          margin-right: 0;
+        }
+      }
+      .btn-tol-abs {
+        top: -4px;
+        right: auto;
+        bottom: auto;
+        left: -4px;
+        position: absolute;
+      }
+
+    }
+  }
+}
+
+.dashboard-tabs{
+  border: 1px solid #A3ADB9;
+  border-radius: 4px;
+  li.nav-item{
+    a.nav-link{
+      border:0;
+      color: #4B4C4C;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 5px 7px;
+      &:hover{
+        color:#000;
+      }
+      &.active{
+        border:0;
+        background: transparent;
+        color: #000;
+      }
+    }
+  }
+}
+
+.canvas-chart-box{
+  width: 100% !important;
+  max-width: 100% !important;
+  height:auto !important;
+}
+
+.day-month-tab-head{
+  width: 74%;
+  @include absolute(0,auto,auto,0);
+  @include display(flex);
+  @include justify-content(flex-end);
+  z-index: 1;
+  padding: 21px 21px 0 0;
+}
+
+.chart-sidebar-tab-nav{
+  .nav-link {
+    .wc-checkbox-radio .b-input::after {
+      content: '';
+      position: absolute;
+      display: none;
+      left: 3px;
+      top: 3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 2.0rem;
+      background: #22B0AF;
+      transition: background 250ms;
+    }
+    &.active {
+      background: #DEF3F3;
+      border-color: #22B0AF;
+      .wc-checkbox-radio .b-input::after {
+        display: block;
+      }
+      .wc-checkbox-radio .b-input,
+      .wc-checkbox-radio:hover .b-input {
+        background: #fff;
+        border-color: #22B0AF;
+      }
+    }
+  }
+}
+
+
+.dropdown-menu-event-list {
+  height: 360px;
+  overflow: hidden;
+  overflow-y: auto;
+  a:hover{
+    text-decoration: none;
+  }
+}
+
+.dashboard-upcoming-event-list {
+  > div{
+    border-bottom: 1px solid #dee2e6;
+    &:nth-last-of-type(1){
+      border-bottom: 0;
+    }
+  }
+  .rounded-thumb {
+    width: 90px;
+    height: 52px;
+  }
+  a:hover{
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,11 @@
+.sidebar-wrap{
+  a{
+    &.success{
+      span{
+        @include spr-sprite(check-success);
+        @include size(18px, 18px);
+        font-size: 0;
+      }
+    }
+  }
+}

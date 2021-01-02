@@ -1,0 +1,181 @@
+.separator{
+  @include size(1px, 36px);
+  border: 1px solid #000000;
+  opacity: 0.2;
+}
+
+.avatar{
+  background: rgba(0,0,0,.1);
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(center);
+  font-size: 16px;
+  img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+  }
+  &.large-av{
+    height: 112px;
+    width: 112px;
+  }
+  &.medium{
+    height: 36px;
+    width: 36px;
+  }
+  &.medium-2{
+    height: 39px;
+    width: 39px;
+  }
+}
+
+.dot-text{
+  position: relative;
+  color: $input-text;
+  padding-left: 11px;
+  display: inline-block;
+  &:before{
+    content: "";
+    @include size(6px, 6px);
+    background: $input-text;
+    @include absolute(7px, auto, auto, 0);
+    border-radius: 50%;
+  }
+  &.success{
+    color:$success;
+    &:before{
+      background: $success;
+    }
+  }
+  &.warning{
+    color: $warning;
+    &:before{
+      background: $warning;
+    }
+  }
+}
+
+.btn-tol-abs{
+  @include absolute(-4px, auto, auto, -4px);
+}
+
+button.btn-icon-round {
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border: 1px solid #E1E2E4;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 0;
+  padding: 0;
+}
+.row.grid-padding-8{
+  margin-left: -8px;
+  margin-right: -8px;
+  [class*=col-]{
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+
+.rounded-thumb{
+  border-radius: 4px;
+  object-fit: cover;
+  @include size(127px, 70px);
+  &.medium{
+    @include size(64px, 42px);
+  }
+  &.medium-2{
+    @include size(42px, 42px);
+  }
+  &.small{
+    @include size(36px, 36px);
+  }
+}
+
+.color-box{
+  @include size(32px, 32px);
+  background: $warning;
+}
+
+.badge-fixed{
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  &.top-right{
+    @include absolute(-12px, -12px, auto, auto);
+    @include display(flex);
+    @include align-items(center);
+    @include justify-content(center);
+  }
+}
+
+.msg-top-right{
+  position: fixed;
+  top:67px;
+  right:22px;
+  left:auto;
+  bottom:auto;
+  z-index: 999999;
+}
+.hover-blue{
+  color: $black;
+  @include transition(all 0.5s ease 0s);
+  &:hover{
+    color: $blue;
+    text-decoration: none;
+  }
+}
+
+.live-icon {
+  display: inline-block;
+  top: calc(50% - 5px);
+  background-color: red;
+  width: 10px;
+  height: 10px;
+  margin-left: 20px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    background-color: rgba(255, 0, 0, 0.6);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    -webkit-animation: live 2s ease-in-out -1s infinite;
+    animation: live 2s ease-in-out -1s infinite;
+    z-index: -1;
+  }
+}
+@-webkit-keyframes live {
+  0% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+  100% {
+    -webkit-transform: scale(3.5, 3.5);
+    transform: scale(3.5, 3.5);
+    background-color: rgba(255, 0, 0, 0);
+  }
+}
+@keyframes live {
+  0% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+  100% {
+    -webkit-transform: scale(3.5, 3.5);
+    transform: scale(3.5, 3.5);
+    background-color: rgba(255, 0, 0, 0);
+  }
+}

@@ -1,0 +1,199 @@
+.input-group{
+  .form-control.datetimepicker-input{
+    padding-right: 42px;
+    border-radius: 3px;
+  }
+  &.date{
+    .input-group-text{
+      border:0;
+      z-index: 333;
+      @include spr-sprite(calender);
+      @include size(20px, 20px);
+      @include absolute(25%, 10px, auto, auto);
+    }
+  }
+}
+
+
+
+.bootstrap-datetimepicker-widget{
+  &.dropdown-menu{
+    width:254px !important;
+    padding: 0 !important;
+    .list-unstyled{
+      .table.table-sm{
+        thead{
+          tr{
+            &:first-child{
+              background: #F6F7FB;
+              th{
+                color: #4B4C4C;
+                padding: 10px 0;
+                font-weight: 500;
+
+                &.prev{
+                  .fa.fa-chevron-left{
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    &:after{
+                      position: absolute;
+                      left: 11px;
+                      content: '';
+                      @include spr-sprite(arrow-left);
+                      @include size(8px, 13px);
+                    }
+                  }
+
+                }
+
+                &.next{
+                  .fa.fa-chevron-right{
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    &:after{
+                      position: absolute;
+                      right:11px;
+                      content: '';
+                      @include spr-sprite(arrow-right);
+                      @include size(8px, 13px);
+                    }
+                  }
+                }
+
+              }
+            }
+            th{
+              font-size: 13px;
+              color: $black;
+              line-height: 17px;
+              border:0;
+              padding-top: 15px;
+            }
+          }
+        }
+
+        td{
+          font-size: 13px;
+          color: $black;
+          border:0;
+          line-height: 17px;
+          border-radius: 0;
+          padding: 8px 5px;
+          &.old{
+            opacity: 0.6;
+          }
+          &.active{
+            color:$white;
+            background-color: #12A4ED;
+            &::before{
+              display:none;
+            }
+          }
+        }
+      }
+
+      .table-condensed{
+        .separator{
+          border:0;
+        }
+        margin-top: 0;
+        a:not(.btn){
+          color: #454F59;
+          display: inline-block;
+          position: relative;
+          width: 100%;
+          padding: 0;
+
+          span.fa.fa-clock-o{
+            display: inline-block;
+            width: 100%;
+            height: 35px;
+            margin: 0;
+            &::before {
+              content: '';
+              @include spr-sprite(icon-clock);
+              @include size(18px, 18px);
+              position: absolute;
+              left: 50%;
+              top: 10px;
+              -webkit-transform: translateX(-50%);
+              transform: translateX(-50%);
+            }
+          }
+
+          span.fa.fa-calendar{
+            display: inline-block;
+            width: 100%;
+            height: 35px;
+            margin: 0;
+            &::before {
+              content: '';
+              @include spr-sprite(calender);
+              @include size(18px, 20px);
+              position: absolute;
+              left: 50%;
+              top: 10px;
+              -webkit-transform: translateX(-50%);
+              transform: translateX(-50%);
+            }
+          }
+        }
+
+        //time
+        a.btn[data-action="incrementHours"]{
+          position: relative;
+          &:before{
+            position: absolute;
+            content: '';
+            @include spr-sprite(arrow-right);
+            @include size(8px, 13px);
+            left: 25px;
+            top: 25px;
+            transform: rotate(-90deg);
+          }
+        }
+        a.btn[data-action="incrementMinutes"]{
+          position: relative;
+          &:before{
+            position: absolute;
+            content: '';
+            @include spr-sprite(arrow-right);
+            @include size(8px, 13px);
+            left: 25px;
+            top: 25px;
+            transform: rotate(-90deg);
+          }
+        }
+
+
+        a.btn[data-action="decrementHours"]{
+          position: relative;
+          &:before{
+            position: absolute;
+            content: '';
+            @include spr-sprite(arrow-right);
+            @include size(8px, 13px);
+            left: 25px;
+            top: 25px;
+            transform: rotate(90deg);
+          }
+        }
+        a.btn[data-action="decrementMinutes"]{
+          position: relative;
+          &:before{
+            position: absolute;
+            content: '';
+            @include spr-sprite(arrow-right);
+            @include size(8px, 13px);
+            left: 25px;
+            top: 25px;
+            transform: rotate(90deg);
+          }
+        }
+
+      }
+    }
+  }
+}

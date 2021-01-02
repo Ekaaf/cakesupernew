@@ -1,0 +1,35 @@
+.track-visitor{
+  .nav-link {
+    background: #FFFFFF;
+    border: 1px solid #E4E7EA;
+    border-radius: 3px;
+    color: #4B4C4C;
+    padding: 13px;
+    display: block;
+    margin-bottom: 8px;
+    .wc-checkbox-radio .b-input::after {
+      content: '';
+      position: absolute;
+      display: none;
+      left: 3px;
+      top: 3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 2.0rem;
+      background: #22B0AF;
+      transition: background 250ms;
+    }
+    &.active {
+      background: #DEF3F3;
+      border-color: #22B0AF;
+      .wc-checkbox-radio .b-input::after {
+        display: block;
+      }
+      .wc-checkbox-radio .b-input,
+      .wc-checkbox-radio:hover .b-input {
+        background: #fff;
+        border-color: #22B0AF;
+      }
+    }
+  }
+}
