@@ -35,9 +35,9 @@ use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Identifier\IdentifierInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
-// use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
+use App\Middleware\SuperAdminMiddleware;
 /**
  * Application setup class.
  *
@@ -116,7 +116,9 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'httponly' => true,
             ]))
 
-            ->add(new AuthenticationMiddleware($this));
+            ->add(new AuthenticationMiddleware($this))
+
+            ->add(new SuperAdminMiddleware());
 
         return $middlewareQueue;
     }

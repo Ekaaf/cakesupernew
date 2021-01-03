@@ -47,8 +47,8 @@ class SuperadminController extends AppController
 		if ($this->request->is('post')) {
 	    	$data = $this->request->getData();
 	    	$verifyUser = $this->verifyUser($data);
-	    	$this->saveUserLoginAttempt($verifyUser['id']);
 	    	if(count($verifyUser)>0){
+	    		$this->saveUserLoginAttempt($verifyUser['id']);
 	    		$otpSaveSuccess = $this->saveUsersOtp($verifyUser['id']);
 	    		if($otpSaveSuccess){
 		    		$this->request->getSession()->write(['user' => $verifyUser]);
@@ -112,7 +112,9 @@ class SuperadminController extends AppController
 
 
 	public function index(){
-
+		// dd($this->Authentication->getIdentity());
+		// dd($this->request->getSession()->read('Auth'));
+		// dd($identity->get('email'));
 	}
 
 
@@ -183,7 +185,7 @@ class SuperadminController extends AppController
     	$hashedPassword = $hash->hash($data['password']);
     	$user = $this->Users->find('all')
 	    		->where(['Users.email' => $data['email']])->first()->toArray();
-	    if (password_verify($data['password'], $hashedPassword)) {
+	    if (password_verify($data['password'], $user['password'])) {
 	    	$result = $user;
 		} else {
 		    $result = [];
@@ -228,7 +230,63 @@ class SuperadminController extends AppController
 	}
 
 
-	public function resetPassword($id){
-		dd($id);
+	public function resetPassword($token){
+		$resetSuccess = $this->resetPasswordCheck($token);
+		if($resetSuccess['success'] == 2){
+			$this->Flash->error('Token expired');
+		}
+		elseif($resetSuccess['success'] == 1){
+			$this->Flash->error('Invalid Token');
+		}
+		if ($this->request->is('post')) {
+			$result = 0;
+			$data = $this->request->getData();
+			if($resetSuccess['success'] == 1){
+				$hash = new DefaultPasswordHasher();
+    			$hashedPassword = $hash->hash($data['new_password']);
+				$updateUser = $this->Users->query();
+				$updateUser->update()
+				    ->set(['password' => $hashedPassword])
+				    ->where(['email' => $resetSuccess['email']])
+				    ->execute();
+				$this->Flash->error('Password changed successfull');
+			}
+			elseif($resetSuccess['success'] == 2){
+				$this->Flash->error('Password changed error');
+			}
+		}
+	}
+
+
+	public function resetPasswordCheck($token){
+		$result = [];
+		$resetPass = $this->PasswordReset->find('all')
+    		->where(['PasswordReset.token' => $token])->first();
+    	if(is_null($resetPass)){
+    		$result['success'] = 0;
+    	}
+    	else{
+    		$currentTime = strtotime("now");
+		    $expireTime = strtotime('+5 minutes', strtotime($resetPass->created->format('Y-m-d H:i:s')));
+		   	if($currentTime <= $expireTime){
+		   		$result['success'] = 1;
+		   		$result['email'] = $resetPass['email'];
+		   		$status = 2;
+		   	}
+		   	else if($currentTime > $expireTime){
+		   		$result['success'] = 2;
+		   		$status = 3;
+		   	}
+		   	else{
+		   		$result['success'] = 0;
+		   	}
+		   	$updatePassReset = $this->PasswordReset->query();
+			$updatePassReset->update()
+			    ->set(['status' => $status])
+			    ->where(['token' => $token])
+			    ->execute();
+    	}
+    	
+	    return $result;
 	}
 }

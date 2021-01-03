@@ -15,7 +15,7 @@ $routes->plugin(
         $routes->post('/verify-otp', ['controller' => 'Superadmin', 'action' => 'verifyOtp']);
         $routes->get('/forgot-password', ['controller' => 'Superadmin', 'action' => 'forgotPassword']);
         $routes->post('/forgot-password', ['controller' => 'Superadmin', 'action' => 'forgotPassword']);
-        $routes->get('/reset-password/{id}', ['controller' => 'Superadmin', 'action' => 'resetPassword']);
+        $routes->connect('/reset-password/{id}',['controller' => 'Superadmin', 'action' => 'resetPassword'],['pass' => ['id']]);
         // $routes->get('/contacts/{id}', ['controller' => 'Contacts', 'action' => 'view']);
         // $routes->put('/contacts/{id}', ['controller' => 'Contacts', 'action' => 'update']);
     }
