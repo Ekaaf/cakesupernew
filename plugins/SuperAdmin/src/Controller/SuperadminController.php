@@ -25,13 +25,6 @@ class SuperadminController extends AppController
     }
 
 
-    public function beforeFilter(\Cake\Event\EventInterface $event)
-	{
-	    parent::beforeFilter($event);
-
-	    $this->Authentication->allowUnauthenticated(['login','verifyOtp','forgotPassword', 'resetPassword']);
-	}
-
     public function login()
 	{	
 		// $user = $this->Users->newEntity();
