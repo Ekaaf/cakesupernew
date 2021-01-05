@@ -37,8 +37,15 @@ class UsersOtpTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmptyString('id', null, 'create');
+            ->allowEmptyString('id', null, 'create')
 
+            ->requirePresence('otp')
+            ->notEmpty('otp', 'OTP is Required.')
+            ->add('otp', [
+                    'numeric'=>[
+                        'message' => 'OTP must be a number.'
+                    ]
+                ]);
         return $validator;
     }
 

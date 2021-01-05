@@ -17,8 +17,7 @@
 </head>
 
 <body>
-
-	<?= $this->fetch('content') ?>
+    <?= $this->fetch('content') ?>
 
 <?= $this->Html->script('/SuperAdmin/assets/js/jquery-3.5.1.slim.min.js');?>
 <?= $this->Html->script('/SuperAdmin/assets/vendors/select2/select2.min.js');?>

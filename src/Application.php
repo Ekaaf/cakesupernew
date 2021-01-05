@@ -116,9 +116,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'httponly' => true,
             ]))
 
-            ->add(new AuthenticationMiddleware($this))
-
-            ->add(new SuperAdminMiddleware());
+            ->add(new AuthenticationMiddleware($this));
 
         return $middlewareQueue;
     }

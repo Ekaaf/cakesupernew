@@ -34,6 +34,8 @@ class SuperadminController extends AppController
 
     public function login()
 	{	
+		// $user = $this->Users->newEntity();
+		$user = $this->Users->newEmptyEntity();
 		$result = $this->Authentication->getResult();
 	    // If the user is logged in send them away.
 	    if ($result->isValid()) {
@@ -44,30 +46,40 @@ class SuperadminController extends AppController
 	        ]);
 	        return $this->redirect($redirect);
 	    }
+
+	    // if login form is submitted
 		if ($this->request->is('post')) {
-	    	$data = $this->request->getData();
-	    	$verifyUser = $this->verifyUser($data);
-	    	if(count($verifyUser)>0){
-	    		$this->saveUserLoginAttempt($verifyUser['id']);
-	    		$otpSaveSuccess = $this->saveUsersOtp($verifyUser['id']);
-	    		if($otpSaveSuccess){
-		    		$this->request->getSession()->write(['user' => $verifyUser]);
-		    		$redirect = $this->request->getQuery('redirect', [
-			        	'plugin' => 'SuperAdmin',
-			            'controller' => 'Superadmin',
-			            'action' => 'verifyOtp',
-			        ]);
-			        return $this->redirect($redirect);
+			$data = $this->request->getData();
+	    	$user = $this->Users->patchEntity($user, $data,['validate' => 'login']);
+	    	if(!$user->getErrors()){
+	    		$verifyUser = $this->verifyUser($data);
+		    	if($verifyUser){
+		    		$this->saveUserLoginAttempt($verifyUser->id);
+		    		// save otp for login
+		    		$otpSaveSuccess = $this->saveUsersOtp($verifyUser->id, $verifyUser->email);
+		    		if($otpSaveSuccess['status'] == 'success'){
+		    			$text = "Your OTP is ".$otpSaveSuccess['otp']." and is valid for next 5 minutes";
+						$this->sendmail($verifyUser->email, "OTP", $template=null, $text);
+			    		$this->request->getSession()->write(['user' => $verifyUser->toArray()]);
+			    		$redirect = $this->request->getQuery('redirect', [
+				        	'plugin' => 'SuperAdmin',
+				            'controller' => 'Superadmin',
+				            'action' => 'verifyOtp',
+				        ]);
+				        return $this->redirect($redirect);
+			    	}
+			    	else{
+			    		$this->Flash->error('Could not send OTP');
+			    	}
 		    	}
 		    	else{
-		    		$this->Flash->error('Could not send OTP');
+		    		$this->Flash->error('Username and password does not match');
 		    	}
 	    	}
-	    	else{
-	    		$this->Flash->error('Invalid username or password');
-	    	}
+	    	
 
 		}
+		$this->set('user', $user);
 	}
 
 
@@ -78,8 +90,28 @@ class SuperadminController extends AppController
 		
 	}
 
+	public function saveUsersOtp($user_id,$user_email){
+		$result = [];
+		$updateOtp = $this->UsersOtp->query();
+		$updateOtp->update()
+		    ->set(['status' => 0])
+		    ->where(['user_id' => $user_id])
+		    ->execute();
+		$otp = $this->generateNumericOTP(6);
+		$usersOtp = $this->UsersOtp->newEmptyEntity();
+		$usersOtp->user_id = $user_id;
+		$usersOtp->otp = $otp;
+		$usersOtp->status = 1;
+		if ($this->UsersOtp->save($usersOtp)) {
+			$result['otp']= $otp;
+			$result['status'] = 'success';
+		}
+		else{
+			$result['status'] = 'fail';
+		}
+		return $result;
+	}
 
-	
 	public function generateNumericOTP($n) { 
 		
 		$generator = "1357902468"; 
@@ -90,25 +122,7 @@ class SuperadminController extends AppController
 		return $result; 
 	} 
 
-	public function saveUsersOtp($user_id){
-		
-		$updateOtp = $this->UsersOtp->query();
-		$updateOtp->update()
-		    ->set(['status' => 0])
-		    ->where(['user_id' => $user_id])
-		    ->execute();
-
-		$usersOtp = $this->UsersOtp->newEmptyEntity();
-		$usersOtp->user_id = $user_id;
-		$usersOtp->otp = $this->generateNumericOTP(6);
-		$usersOtp->status = 1;
-		if ($this->UsersOtp->save($usersOtp)) {
-			return 1;
-		}
-		else{
-			return 0;
-		}
-    }
+	
 
 
 	public function index(){
@@ -119,73 +133,85 @@ class SuperadminController extends AppController
 
 
 	public function verifyOtp(){
+		if(!$this->request->getSession()->read('user')){
+			$redirect = $this->request->getQuery('redirect', [
+	        	'plugin' => 'SuperAdmin',
+	            'controller' => 'Superadmin',
+	            'action' => 'login',
+	        ]);
+	        return $this->redirect($redirect);
+		}
+		$usersOtp = $this->UsersOtp->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$user = $this->request->getSession()->read('user');
 			$otp = $this->request->getData()['otp'];
-			$matchOtp = $this->matchOtp($user['id'], $otp);
-    		if($matchOtp == 1){
-    			$updateOtp = $this->UsersOtp->query();
-				$updateOtp->update()
-				    ->set(['status' => 2])
-				    ->where(['user_id' => $user['id'], 'otp' => $otp])
-				    ->execute();
-	    		$this->request->getSession()->write(['Auth' => $user]);
-	    		$redirect = $this->request->getQuery('redirect', [
+			$usersOtp = $this->UsersOtp->patchEntity($usersOtp, $this->request->getData());
+			if(!$usersOtp->getErrors()){
+				$matchOtp = $this->matchOtp($user['id'], $otp);
+	    		if($matchOtp == 'success'){
+	    			$updateOtp = $this->UsersOtp->query();
+					$updateOtp->update()
+					    ->set(['status' => 2])
+					    ->where(['user_id' => $user['id'], 'otp' => $otp])
+					    ->execute();
+					$this->request->getSession()->destroy();
+		    		$this->request->getSession()->write(['Auth' => $user]);
+		    		$action = 'index';
+		    	}
+		    	else if($matchOtp == 'expired'){
+		    		$action = 'login';
+		    	}
+		    	else{
+		    		$action = 'verifyOtp';
+		    	}
+		    	$redirect = $this->request->getQuery('redirect', [
 		        	'plugin' => 'SuperAdmin',
 		            'controller' => 'Superadmin',
-		            'action' => 'index',
+		            'action' => $action,
 		        ]);
 		        return $this->redirect($redirect);
-	    	}
-	    	else if($matchOtp == 2){
-	    		$redirect = $this->request->getQuery('redirect', [
-		        	'plugin' => 'SuperAdmin',
-		            'controller' => 'Superadmin',
-		            'action' => 'login',
-		        ]);
-		        return $this->redirect($redirect);
-	    	}
-	    	else{
-	    		$redirect = $this->request->getQuery('redirect', [
-		        	'plugin' => 'SuperAdmin',
-		            'controller' => 'Superadmin',
-		            'action' => 'login',
-		        ]);
-		        return $this->redirect($redirect);
-	    	}
+		    }
 	    }
+	    $this->set('usersOtp', $usersOtp);
 	}
 
 
 	public function matchOtp(int $user_id, string $otp){
 		$result = 0;
 		$userByOtp = $this->UsersOtp->find('all')
-	    		->where(['UsersOtp.user_id' => $user_id, 'UsersOtp.otp' => $otp, 'UsersOtp.status' => 1])->first()->toArray();
-	    $currentTime = strtotime("now");
-	    $expireTime = strtotime('+5 minutes', strtotime($userByOtp['created']->format('Y-m-d H:i:s')));
-	   	if($currentTime <= $expireTime){
-	   		$result = 1;
-	   	}
-	   	else if($currentTime > $expireTime){
-	   		$updateOtp = $this->UsersOtp->query();
-			$updateOtp->update()
-			    ->set(['status' => 3])
-			    ->where(['user_id' => $user_id, 'otp' => $otp])
-			    ->execute();
-	   		$result = 2;
-	   	}
-	   	else{
-	   		$result = 0;
-	   	}
+	    		->where(['UsersOtp.user_id' => $user_id, 'UsersOtp.otp' => $otp, 'UsersOtp.status' => 1])->first();
+	    if($userByOtp){
+	    	$currentTime = strtotime("now");
+		    $expireTime = strtotime('+5 minutes', strtotime($userByOtp->created->format('Y-m-d H:i:s')));
+		   	if($currentTime <= $expireTime){
+		   		$result = 'success';
+		   	}
+		   	else if($currentTime > $expireTime){
+		   		$updateOtp = $this->UsersOtp->query();
+				$updateOtp->update()
+				    ->set(['status' => 3])
+				    ->where(['user_id' => $user_id, 'otp' => $otp])
+				    ->execute();
+		   		$result = 'expired';
+		   		$this->Flash->error('OTP expired');
+		   	}
+		   	else{
+		   		$result = 'fail';
+		   		$this->Flash->error('OTP did not match');
+		   	}
+	    }
+	    else{
+	    	$result = 'fail';
+	    	$this->Flash->error('OTP did not match');
+	    }
+	    
 	    return $result;
 	}
 
 	public function verifyUser(array $data){
-		$hash = new DefaultPasswordHasher();
-    	$hashedPassword = $hash->hash($data['password']);
-    	$user = $this->Users->find('all')
-	    		->where(['Users.email' => $data['email']])->first()->toArray();
-	    if (password_verify($data['password'], $user['password'])) {
+		$user = $this->Users->find('all')
+	    		->where(['Users.email' => $data['email']])->first();
+	    if ($user && password_verify($data['password'], $user->password)) {
 	    	$result = $user;
 		} else {
 		    $result = [];
@@ -209,52 +235,89 @@ class SuperadminController extends AppController
 
 
 	public function forgotPassword(){
+		$passwordReset = $this->PasswordReset->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$data = $this->request->getData();
-			$updateToken = $this->PasswordReset->query();
-			$updateToken->update()
-			    ->set(['status' => 0])
-			    ->where(['email' => $data['email'], 'status' => 1])
-			    ->execute();
-			$passwordReset = $this->PasswordReset->newEmptyEntity();
-			$passwordReset->email = $data['email'];
-			$passwordReset->token = md5($data['email']).rand(10,999999999);
-			$passwordReset->status = 1;
-			if($this->PasswordReset->save($passwordReset)){
-				dd('password sent');
-			}
-			else{
-
-			}
+			$user = $this->Users->find('all')
+	    		->where(['Users.email' => $data['email']])->first();
+	    	if(!$user){
+	    		$this->Flash->error('Email does not exist');
+	    	}
+	    	else{
+	    		$updateToken = $this->PasswordReset->query();
+				$updateToken->update()
+				    ->set(['status' => 0])
+				    ->where(['email' => $data['email'], 'status' => 1])
+				    ->execute();
+				$token = md5($data['email']).rand(10,999999999);
+				$passwordReset->email = $data['email'];
+				$passwordReset->token = $token;
+				$passwordReset->status = 1;
+				$passwordReset = $this->PasswordReset->patchEntity($passwordReset, $passwordReset->toArray());
+				if($this->PasswordReset->save($passwordReset)){
+					$text = "Please click the following link to reset your password. <br>http://".$_SERVER['HTTP_HOST']."/super-admin/reset-password/".$token;
+					$this->sendmail($data['email'], "OTP", $template=null, $text);
+					$this->Flash->success('A reset link has been sent to your mail');
+				}
+				else{
+					$this->Flash->error('Could not reset password. Please try again later');
+				}
+	    	}
+			
 		}
+		$this->set('passwordReset', $passwordReset);
 	}
 
 
 	public function resetPassword($token){
+		$user = $this->Users->newEmptyEntity();
 		$resetSuccess = $this->resetPasswordCheck($token);
-		if($resetSuccess['success'] == 2){
+		$action = '';
+		if($resetSuccess['status'] == 'expired'){
 			$this->Flash->error('Token expired');
+			$action = 'login';
 		}
-		elseif($resetSuccess['success'] == 1){
-			$this->Flash->error('Invalid Token');
+		elseif($resetSuccess['status'] == 'fail'){
+			$this->Flash->error('Invalid link');
+			$action = 'login';
 		}
-		if ($this->request->is('post')) {
-			$result = 0;
+		elseif ($resetSuccess['status'] == 'success' && $this->request->is('post')) {
 			$data = $this->request->getData();
-			if($resetSuccess['success'] == 1){
-				$hash = new DefaultPasswordHasher();
-    			$hashedPassword = $hash->hash($data['new_password']);
-				$updateUser = $this->Users->query();
-				$updateUser->update()
-				    ->set(['password' => $hashedPassword])
-				    ->where(['email' => $resetSuccess['email']])
-				    ->execute();
-				$this->Flash->error('Password changed successfull');
+			if($data['new_password'] =='' || $data['confirm_password'] == ''){
+				$this->Flash->error('Password cannot be null');
 			}
-			elseif($resetSuccess['success'] == 2){
-				$this->Flash->error('Password changed error');
+			elseif( $data['new_password'] !== $data['confirm_password']){
+				$this->Flash->error('Password do not match');
 			}
+			else{
+				if($resetSuccess['status'] == 'success'){
+					$hash = new DefaultPasswordHasher();
+	    			$hashedPassword = $hash->hash($data['new_password']);
+					$updateUser = $this->Users->query();
+					$updateUser->update()
+					    ->set(['password' => $hashedPassword])
+					    ->where(['email' => $resetSuccess['email']])
+					    ->execute();
+					$this->Flash->success('Password reset successfull');
+					$action = 'login';
+				}
+				elseif($resetSuccess['status'] == 2){
+					$this->Flash->error('Token expired');
+					$action = 'resetPassword';
+				}
+			}
+
 		}
+
+		if($action != ''){
+			$redirect = $this->request->getQuery('redirect', [
+	        	'plugin' => 'SuperAdmin',
+	            'controller' => 'Superadmin',
+	            'action' => $action,
+	        ]);
+			return $this->redirect($redirect);
+		}
+		$this->set('user', $user);
 	}
 
 
@@ -263,22 +326,22 @@ class SuperadminController extends AppController
 		$resetPass = $this->PasswordReset->find('all')
     		->where(['PasswordReset.token' => $token])->first();
     	if(is_null($resetPass)){
-    		$result['success'] = 0;
+    		$result['status'] = 'fail';
     	}
     	else{
     		$currentTime = strtotime("now");
 		    $expireTime = strtotime('+5 minutes', strtotime($resetPass->created->format('Y-m-d H:i:s')));
 		   	if($currentTime <= $expireTime){
-		   		$result['success'] = 1;
-		   		$result['email'] = $resetPass['email'];
+		   		$result['status'] = 'success';
+		   		$result['email'] = $resetPass->email;
 		   		$status = 2;
 		   	}
 		   	else if($currentTime > $expireTime){
-		   		$result['success'] = 2;
+		   		$result['status'] = 'expired';
 		   		$status = 3;
 		   	}
 		   	else{
-		   		$result['success'] = 0;
+		   		$result['fail'] = 'fail';
 		   	}
 		   	$updatePassReset = $this->PasswordReset->query();
 			$updatePassReset->update()

@@ -37,7 +37,20 @@ class PasswordResetTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmptyString('id', null, 'create');
+            ->allowEmptyString('id', null, 'create')
+
+            ->email('email')
+            ->notEmptyString('email', __('Enter your email address'))
+
+            ->notEmptyString('token', __('Token is not present'))
+
+            ->requirePresence('status')
+            ->notEmpty('status', 'Status is not present.')
+            ->add('status', [
+                    'numeric'=>[
+                        'message' => 'Status is not present.'
+                    ]
+                ]);
 
         return $validator;
     }

@@ -8,13 +8,12 @@
                     <div class="col-md-12">
                     </div>
                 </div>
-
-                <form method="post" accept-charset="utf-8" id="admin-login-form" action="">
-                    <input type="hidden" name="_csrfToken" value="<?=$this->request->getAttribute('csrfToken');?>">
+                <?= $this->Flash->render() ?>
+                <?= $this->Form->create($usersOtp,['id'=>'admin-login-form','type' => 'post']) ?>
                     <div class="form-area">
-                        <div class="input text">
-                            <input type="text" name="otp" id="otp" class="md-input" placeholder="OTP"/>
-                        </div>
+                        <?php 
+                            echo $this->Form->control('otp',['class'=>'md-input','required' => false, 'placeholder'=>'OTP', 'label' => false]);
+                        ?>
                         <input class="wc-btn-normal" type="submit" value="Verify">
                     </div>
                 </form>

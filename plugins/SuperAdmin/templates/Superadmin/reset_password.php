@@ -8,15 +8,15 @@
                     <div class="col-md-12">
                     </div>
                 </div>
-
-                <form method="post" accept-charset="utf-8" id="admin-login-form" action="">
-                    <input type="hidden" name="_csrfToken" value="<?=$this->request->getAttribute('csrfToken');?>">
+                <?= $this->Flash->render() ?>
+                <?= $this->Form->create($user,['id'=>'admin-login-form','type' => 'post']) ?>
                     <div class="form-area">
-                        <div class="input text">
-                            <input type="password" name="new_password" class="md-input" id="new_password" placeholder="New Password"/>
-                        </div><div class="input password">
-                            <input type="password" name="confirm_password" class="md-input" id="confirm_password" placeholder="Confirm Password"/>
-                        </div>
+                        <?php
+                            echo $this->Form->control('new_password',['class'=>'md-input', 'type'=>'password', 'required' => false, 'placeholder'=>'New Password','label' => false]);
+
+                            echo $this->Form->control('confirm_password',['class'=>'md-input', 'type'=>'password', 'required' => false, 'placeholder'=>'Confirm Password','label' => false]);
+
+                        ?>
                         <input class="wc-btn-normal" type="submit" value="Reset Password">
                     </div>
 

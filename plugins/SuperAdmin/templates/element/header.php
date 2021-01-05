@@ -62,7 +62,7 @@
                     <a class="dropdown-item" href="#">My account</a>
                     <a class="dropdown-item" href="#">My account</a>
                     <a class="dropdown-item" href="#">My account</a>
-                    <a class="dropdown-item" href="#">My account</a>
+                    <a class="dropdown-item" href="super-admin/logout">Logout</a>
                 </div>
             </div>
 

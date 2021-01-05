@@ -242,6 +242,15 @@ return [
             'tls' => false,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
+        'gmail' => [
+            'host' => 'smtp.sendgrid.net',
+            'port' => 587,
+            "username" => 'apikey', 
+            "password" => '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',
+            'className' => 'Smtp',
+            'tls' => true,
+            'transport' => 'Smtp',
+        ]
     ],
 
     /*

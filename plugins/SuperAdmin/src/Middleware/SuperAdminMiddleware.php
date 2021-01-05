@@ -19,14 +19,11 @@ class SuperAdminMiddleware implements MiddlewareInterface
         // Calling $handler->handle() delegates control to the *next* middleware
         // In your application's queue.
         $response = $handler->handle($request);
-
-        if (!$request->getCookie('landing_page')) {
-            $expiry = new Time('+ 1 year');
-            $response = $response->withCookie(new Cookie(
-                'landing_page',
-                $request->getRequestTarget(),
-                $expiry
-            ));
+        $identity = $request->getAttribute('identity');
+        if($identity){
+            if($identity->get('role') !=1){
+                dd("You Are not authorized");
+            }   
         }
 
         return $response;

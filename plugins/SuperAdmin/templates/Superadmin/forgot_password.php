@@ -9,12 +9,13 @@
                     </div>
                 </div>
 
-                <form method="post" accept-charset="utf-8" id="admin-login-form" action="">
+                <?= $this->Flash->render() ?>
+                <?= $this->Form->create($passwordReset,['id'=>'admin-login-form','type' => 'post']) ?>
                     <input type="hidden" name="_csrfToken" value="<?=$this->request->getAttribute('csrfToken');?>">
                     <div class="form-area">
-                        <div class="input text">
-                            <input type="email" name="email" id="email" class="md-input" placeholder="email"/>
-                        </div>
+                        <?php 
+                            echo $this->Form->control('email',['class'=>'md-input','type'=>'email', 'required' => false, 'placeholder'=>'email', 'label' => false]);
+                        ?>
                         <input class="wc-btn-normal" type="submit" value="Send">
                     </div>
                 </form>

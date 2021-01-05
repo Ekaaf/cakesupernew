@@ -46,12 +46,12 @@ class UsersTable extends Table
         $this->addBehavior('Timestamp');
     }
 
-    // protected function _setPassword(string $password) : ?string
-    // {
-    //     if (strlen($password) > 0) {
-    //         return (new DefaultPasswordHasher())->hash($password);
-    //     }
-    // }
+    protected function _setPassword(string $password) : ?string
+    {
+        if (strlen($password) > 0) {
+            return (new DefaultPasswordHasher())->hash($password);
+        }
+    }
 
 
     /**
@@ -73,12 +73,12 @@ class UsersTable extends Table
 
         $validator
             ->email('email')
-            ->allowEmptyString('email');
+            ->notEmptyString('email');
 
         $validator
             ->scalar('password')
             ->maxLength('password', 255)
-            ->allowEmptyString('password');
+            ->notEmptyString('password');
 
         $validator
             ->integer('role')
@@ -101,4 +101,17 @@ class UsersTable extends Table
 
         return $rules;
     }
+
+    public function validationlogin()
+    {   
+        $validator = new Validator();
+        $validator
+            ->email('email')
+            ->notEmptyString('email', __('Enter your email address'))
+
+            ->notEmptyString('password', __('Enter your password'));
+
+        return $validator;
+    }
+
 }

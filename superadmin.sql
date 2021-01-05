@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2021 at 09:15 PM
+-- Generation Time: Jan 05, 2021 at 06:38 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.7
 
@@ -36,15 +36,6 @@ CREATE TABLE `password_reset` (
   `modified` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `password_reset`
---
-
-INSERT INTO `password_reset` (`id`, `email`, `token`, `status`, `created`, `modified`) VALUES
-(1, 'ekaf@gmail.com', 'f7cb0ef4336e0543d69290627e3b87e2409670688', 2, '2021-01-02 20:02:24', '2021-01-02 20:02:24'),
-(2, 'ekaf@gmail.com', 'f7cb0ef4336e0543d69290627e3b87e2301489489', 0, '2021-01-02 20:02:33', '2021-01-02 20:02:33'),
-(3, 'ekaf@gmail.com', 'f7cb0ef4336e0543d69290627e3b87e2442475644', 1, '2021-01-02 20:03:20', '2021-01-02 20:03:20');
-
 -- --------------------------------------------------------
 
 --
@@ -63,7 +54,7 @@ CREATE TABLE `userlogin_attempt` (
 --
 
 INSERT INTO `userlogin_attempt` (`id`, `user_id`, `created`, `modified`) VALUES
-(1, 1, '2021-01-02 19:24:43', '2021-01-02 19:24:43');
+(26, 1, '2021-01-05 05:37:49', '2021-01-05 05:37:49');
 
 -- --------------------------------------------------------
 
@@ -86,7 +77,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created`, `modified`) VALUES
-(1, 'ekaf', 'ekaf@gmail.com', '$2y$10$RZ3cjZioxtq1rzuw/nDryORFXELIxqQosgvkwCFdsalcs.2bZTUfm', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'ekaf', 'ishmam.ekaf@gmail.com', '$2y$10$8OBBe6AhRjixjcBcmahsS.a/VpcOMa90VMRYLiOA5IqLjiK2KnEF6', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -108,14 +99,14 @@ CREATE TABLE `users_otp` (
 --
 
 INSERT INTO `users_otp` (`id`, `user_id`, `otp`, `status`, `created`, `modified`) VALUES
-(42, 1, '654495', 0, '2021-01-02 18:57:29', '2021-01-02 18:57:29'),
-(43, 1, '438702', 0, '2021-01-02 18:57:44', '2021-01-02 18:57:44'),
-(44, 1, '773630', 0, '2021-01-02 18:58:37', '2021-01-02 18:58:37'),
-(45, 1, '223078', 0, '2021-01-02 19:10:09', '2021-01-02 19:10:09'),
-(46, 1, '422244', 0, '2021-01-02 19:10:39', '2021-01-02 19:10:39'),
-(47, 1, '592315', 0, '2021-01-02 19:10:48', '2021-01-02 19:10:48'),
-(48, 1, '856290', 0, '2021-01-02 18:10:57', '2021-01-02 19:10:57'),
-(49, 1, '787377', 1, '2021-01-02 19:24:43', '2021-01-02 19:24:43');
+(67, 1, '538722', 0, '2021-01-05 05:01:47', '2021-01-05 05:01:47'),
+(68, 1, '206401', 0, '2021-01-05 05:23:45', '2021-01-05 05:23:45'),
+(69, 1, '736239', 0, '2021-01-05 05:25:03', '2021-01-05 05:25:03'),
+(70, 1, '455412', 0, '2021-01-05 05:26:25', '2021-01-05 05:26:25'),
+(71, 1, '356582', 0, '2021-01-05 05:32:22', '2021-01-05 05:32:22'),
+(72, 1, '520609', 0, '2021-01-05 05:32:36', '2021-01-05 05:32:36'),
+(73, 1, '969303', 0, '2021-01-05 05:34:54', '2021-01-05 05:34:54'),
+(74, 1, '192534', 1, '2021-01-05 05:37:49', '2021-01-05 05:37:49');
 
 --
 -- Indexes for dumped tables
@@ -153,13 +144,13 @@ ALTER TABLE `users_otp`
 -- AUTO_INCREMENT for table `password_reset`
 --
 ALTER TABLE `password_reset`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `userlogin_attempt`
 --
 ALTER TABLE `userlogin_attempt`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -171,7 +162,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users_otp`
 --
 ALTER TABLE `users_otp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

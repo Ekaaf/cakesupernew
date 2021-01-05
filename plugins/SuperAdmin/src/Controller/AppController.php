@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace SuperAdmin\Controller;
-
+use Cake\Mailer\Mailer;
 use App\Controller\AppController as BaseController;
 
 class AppController extends BaseController
@@ -21,5 +21,16 @@ class AppController extends BaseController
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+    }
+
+    public function sendmail($to, $subject, $template=null, $text)
+    {   
+        $mailer = new Mailer('default');
+        $mailer->setTransport('gmail');
+        $mailer->setFrom(['developer.lalsobuj@gmail.com' => 'Red-Graduation'])
+            ->setTo($to)
+            ->setSubject($subject)
+            ->deliver($text);
+        
     }
 }

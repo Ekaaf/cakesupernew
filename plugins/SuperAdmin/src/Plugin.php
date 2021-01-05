@@ -7,6 +7,7 @@ use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
+use SuperAdmin\Middleware\SuperAdminMiddleware;
 
 /**
  * Plugin for SuperAdmin
@@ -58,7 +59,7 @@ class Plugin extends BasePlugin
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
         // Add your middlewares here
-
+        $middlewareQueue->add(new SuperAdminMiddleware());
         return $middlewareQueue;
     }
 }
